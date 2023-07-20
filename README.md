@@ -1,2 +1,7 @@
 # :snake: SnakeGame :snake:
- O jogo da cobrinha é um clássico em que você controla uma serpente em um campo limitado, fazendo-a comer itens enquanto evita colidir com as bordas do campo ou com o próprio corpo. O objetivo é crescer o máximo possível sem se autodestruir.
+
+training excercise forked from **https://github.com/motaag/SnakeGame**
+
+Classic SnakeGame , made on HTML, CSS and JavaScript
+
+The  objective is eat the food, the food position randonly generated, at each food eated the snake grows, you lose when colid in the wall or in tou self body
