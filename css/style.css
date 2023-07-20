@@ -9,9 +9,23 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     color:white;
     min-width: 100vh;
 }
+
+.scoreboard {
+    display: flex;
+    justify-content: center;
+  }
+  
+  h1 {
+    display: flex;
+    align-items: center;
+    margin: 0 10px; /* Ajuste as margens conforme necessário */
+  }
+  
+
 canvas{
     background-color: #111;
 }

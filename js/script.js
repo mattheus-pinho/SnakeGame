@@ -3,30 +3,34 @@ const ctx = canvas.getContext("2d");
 
 const size = 30;
 const snake = [{ x: 0, y: 0 }];
+var speed = 300;
+var eatedFoods = 0;
 
 let direction, loopId;
 
-const randomNumber = (min, max) => {
+function randomNumber(min, max){
   return Math.round(Math.random() * (max - min) + min);
-};
+}
 
-const randomPosition = () => {
+function randomPosition(){
   const number = randomNumber(0, canvas.width - size);
   return Math.round(number / 30) * 30;
-};
-const randomColor = () => {
+}
+
+function randomColor(){
   const red = randomNumber(0, 255);
   const green = randomNumber(0, 255);
   const blue = randomNumber(0, 255);
   return `rgb(${red},${green},${blue})`;
-};
+}
+
 const food = {
   x: randomPosition(),
   y: randomPosition(),
   color: randomColor(),
 };
 
-const drawFood = () => {
+function drawFood(){
   //desestrutura os elementos de um dicionário
   const { x, y, color } = food;
   ctx.shadowColor = color;
@@ -34,8 +38,9 @@ const drawFood = () => {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, size, size);
   ctx.shadowBlur = 0;
-};
-const drawSnake = () => {
+}
+
+function drawSnake(){
   ctx.fillStyle = "#ddd";
   snake.forEach((position, index) => {
     if (index == snake.length - 1) {
@@ -43,9 +48,9 @@ const drawSnake = () => {
     }
     ctx.fillRect(position.x, position.y, size, size);
   });
-};
+}
 
-const moveSnake = () => {
+function moveSnake(){
   if (!direction) return;
   const head = snake[snake.length - 1];
   // shift remove o primeiro elemento de um array
@@ -62,9 +67,8 @@ const moveSnake = () => {
   if (direction == "up") {
     snake.push({ x: head.x, y: head.y - size });
   }
-};
+}
 
-// Recebe qual key ( tecla), foi pressionada no teclado
 document.addEventListener("keydown", ({ key }) => {
   if (key == "ArrowRight" && direction != " left") {
     direction = "right";
@@ -78,9 +82,9 @@ document.addEventListener("keydown", ({ key }) => {
   if (key == "ArrowUp" && direction != " down") {
     direction = "up";
   }
-});
+})
 
-const drawGrid = () => {
+function drawGrid(){
   ctx.lineWidth = 1;
   ctx.strokeStyle = " #191919";
 
@@ -95,9 +99,9 @@ const drawGrid = () => {
     ctx.lineTo(600, i);
     ctx.stroke();
   }
-};
+}
 
-const checkEat = () => {
+function checkEat(){
   const head = snake[snake.length - 1];
   if (head.x == food.x && head.y == food.y) {
     snake.push(head);
@@ -111,10 +115,42 @@ const checkEat = () => {
     food.x = x;
     food.y = y;
     food.color = randomColor();
+    eatedFoods = eatedFoods + 1;
+    speedUp();
+    scoreboard();
   }
-};
+}
 
-const gameLoop = () => {
+function checkColision(){
+  const head = snake[snake.length-1];
+  
+  //Wall colision
+  if(head.x > 600 || head.x < 0 || head.y > 600 || head.y < 0){
+    alert('colisão');
+  }
+  //Body colision
+  
+}
+
+function speedUp(){
+  speed = speed - 5;
+  console.log(speed);
+}
+
+function scoreboard() {
+  const scoreSpeedElements = document.getElementsByClassName('speed');
+  const scoreFoodsElements = document.getElementsByClassName('foods');
+  
+  for (const element of scoreSpeedElements) {
+    element.innerText = `${speed}`;
+  }
+
+  for (const element of scoreFoodsElements) {
+    element.innerText = `${eatedFoods}`;
+  }
+}
+
+function gameLoop(){
   clearInterval(loopId);
   ctx.clearRect(0, 0, 600, 600);
   drawGrid();
@@ -122,9 +158,11 @@ const gameLoop = () => {
   moveSnake();
   drawSnake();
   checkEat();
+  checkColision();
   loopId = setTimeout(() => {
     gameLoop();
-  }, 300);
-};
+  }, speed);
+}
+
 
 gameLoop();
