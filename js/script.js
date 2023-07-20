@@ -126,7 +126,8 @@ function checkColision(){
   
   //Wall colision
   if(head.x > 600 || head.x < 0 || head.y > 600 || head.y < 0){
-    alert('colisão');
+    alert('You Lose');
+    window.location.reload();
   }
   //Body colision
   
